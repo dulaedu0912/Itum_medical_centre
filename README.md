@@ -23,7 +23,7 @@ A **Flask-based medical clinic management system** for the Institute of Technolo
 1. **Clone the repo**
    ```bash
    git clone https://github.com/dulaedu0912/Itum_medical_centre
-   cd itum-medical-centre
+   cd itum_medical_centre
    ```
 
 2. **Set up virtual environment**
