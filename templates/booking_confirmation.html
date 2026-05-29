@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Booking Confirmed - ITUM Medical Centre{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-success">
+            <div class="card-body text-center p-4">
+                <h3 class="text-success mb-4">Appointment Booked!</h3>
+                <div class="mb-4">
+                    <p><strong>Doctor:</strong> {{ booking['doctor_name'] }}</p>
+                    <p><strong>Date:</strong> {{ booking['appointment_date'] }}</p>
+                    <p><strong>Time:</strong> {{ booking['appointment_time'] }}</p>
+                    <p><strong>Reason:</strong> {{ booking['reason'] or 'Not specified' }}</p>
+                    <p><strong>Status:</strong> <span class="badge bg-warning">{{ booking['status'] }}</span></p>
+                </div>
+                <a href="{{ url_for('appointments.my_appointments') }}" class="btn btn-primary">
+                    View My Appointments
+                </a>
+                <a href="{{ url_for('book.book') }}" class="btn btn-outline-primary">
+                    Book Another
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - ITUM Medical Centre{% endblock %}
+{% block content %}
+<h3 class="mb-4">Admin Dashboard</h3>
+
+<!-- Stats Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body text-center">
+                <h2 class="card-title mb-0">{{ total_users }}</h2>
+                <p class="card-text">Users</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body text-center">
+                <h2 class="card-title mb-0">{{ total_doctors }}</h2>
+                <p class="card-text">Doctors</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body text-center">
+                <h2 class="card-title mb-0">{{ total_appointments }}</h2>
+                <p class="card-text">Total Appointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body text-center">
+                <h2 class="card-title mb-0">{{ status_counts['pending'] }}</h2>
+                <p class="card-text">Pending</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Breakdown -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-success">
+            <div class="card-body text-center">
+                <h3 class="text-success">{{ status_counts['completed'] }}</h3>
+                <p>Completed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-danger">
+            <div class="card-body text-center">
+                <h3 class="text-danger">{{ status_counts['cancelled'] }}</h3>
+                <p>Cancelled</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-secondary">
+            <div class="card-body text-center">
+                <h3 class="text-secondary">{{ total_appointments }}</h3>
+                <p>Total</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- All Appointments -->
+<h4 class="mb-3">All Appointments</h4>
+{% if all_appointments %}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Student</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in all_appointments %}
+            <tr>
+                <td>{{ appt['student_name'] }}</td>
+                <td>{{ appt['doctor_name'] }}</td>
+                <td>{{ appt['appointment_date'] }}</td>
+                <td>{{ appt['appointment_time'] }}</td>
+                <td>{{ appt['reason'] or '-' }}</td>
+                <td>
+                    {% if appt['status'] == 'pending' %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif appt['status'] == 'completed' %}
+                    <span class="badge bg-success">Completed</span>
+                    {% elif appt['status'] == 'cancelled' %}
+                    <span class="badge bg-danger">Cancelled</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">No appointments yet.</div>
+{% endif %}
+
+<div class="mt-3">
+    <a href="{{ url_for('admin.manage_users') }}" class="btn btn-outline-primary">Manage Users</a>
+    <a href="{{ url_for('admin.manage_appointments') }}" class="btn btn-outline-primary">All Appointments</a>
+</div>
+{% endblock %}

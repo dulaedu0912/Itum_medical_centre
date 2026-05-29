@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}My Appointments - ITUM Medical Centre{% endblock %}
+{% block content %}
+<h3 class="mb-4">My Appointments</h3>
+
+<!-- Filter Buttons -->
+<div class="btn-group mb-4" role="group">
+    <a href="{{ url_for('appointments.my_appointments', filter='upcoming') }}"
+       class="btn {{ 'btn-primary' if current_filter == 'upcoming' else 'btn-outline-primary' }}">
+        Upcoming
+    </a>
+    <a href="{{ url_for('appointments.my_appointments', filter='past') }}"
+       class="btn {{ 'btn-primary' if current_filter == 'past' else 'btn-outline-primary' }}">
+        Past
+    </a>
+    <a href="{{ url_for('appointments.my_appointments', filter='all') }}"
+       class="btn {{ 'btn-primary' if current_filter == 'all' else 'btn-outline-primary' }}">
+        All
+    </a>
+</div>
+
+{% if appointments %}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+            <tr>
+                <td>{{ appt['doctor_name'] }}</td>
+                <td>{{ appt['appointment_date'] }}</td>
+                <td>{{ appt['appointment_time'] }}</td>
+                <td>{{ appt['reason'] or '-' }}</td>
+                <td>
+                    {% if appt['status'] == 'pending' %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif appt['status'] == 'cancelled' %}
+                    <span class="badge bg-danger">Cancelled</span>
+                    {% elif appt['status'] == 'completed' %}
+                    <span class="badge bg-success">Completed</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if appt['status'] == 'pending' %}
+                    <a href="{{ url_for('appointments.cancel', appt_id=appt['id']) }}"
+                       class="btn btn-sm btn-outline-danger">Cancel</a>
+                    {% else %}
+                    <span class="text-muted">-</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    {% if current_filter == 'upcoming' %}
+    No upcoming appointments. <a href="{{ url_for('book.book') }}">Book one now</a>.
+    {% else %}
+    No appointments found.
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

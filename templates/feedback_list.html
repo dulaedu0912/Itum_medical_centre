@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}My Feedback - ITUM Medical Centre{% endblock %}
+{% block content %}
+<h3 class="mb-4">My Feedback</h3>
+
+<a href="{{ url_for('feedback.give_feedback') }}" class="btn btn-primary mb-4">
+    Give New Feedback
+</a>
+
+{% if feedbacks %}
+<div class="table-responsive mb-5">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Doctor</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fb in feedbacks %}
+            <tr>
+                <td>{{ fb['doctor_name'] }}</td>
+                <td>
+                    {% for i in range(fb['rating']) %}
+                    <span class="text-warning">&#9733;</span>
+                    {% endfor %}
+                    {% for i in range(5 - fb['rating']) %}
+                    <span class="text-secondary">&#9733;</span>
+                    {% endfor %}
+                    ({{ fb['rating'] }}/5)
+                </td>
+                <td>{{ fb['comment'] }}</td>
+                <td>{{ fb['created_at'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">You haven't given any feedback yet.</div>
+{% endif %}
+
+<h4 class="mb-3">Average Ratings per Doctor</h4>
+{% if averages %}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Doctor</th>
+                <th>Average Rating</th>
+                <th>Reviews</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for avg in averages %}
+            <tr>
+                <td>{{ avg['name'] }}</td>
+                <td>
+                    {% if avg['avg_rating'] %}
+                    {% for i in range(avg['avg_rating'] | int) %}
+                    <span class="text-warning">&#9733;</span>
+                    {% endfor %}
+                    {{ avg['avg_rating'] }}
+                    {% else %}
+                    No ratings yet
+                    {% endif %}
+                </td>
+                <td>{{ avg['review_count'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">No ratings available yet.</div>
+{% endif %}
+{% endblock %}

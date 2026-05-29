@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Home - ITUM Medical Centre{% endblock %}
+{% block content %}
+<div class="hero-section text-center py-5 px-3 mb-4">
+    <h1 class="display-4 fw-bold">Welcome to ITUM Medical Centre</h1>
+    <p class="lead">Book appointments with our doctors easily online.</p>
+    {% if session['user_id'] %}
+    <a href="{{ url_for('book.book') }}" class="btn btn-light btn-lg me-2">Book an Appointment</a>
+    <a href="{{ url_for('appointments.my_appointments') }}" class="btn btn-outline-light btn-lg">View My Appointments</a>
+    {% else %}
+    <a href="{{ url_for('register.register') }}" class="btn btn-light btn-lg me-2">Get Started</a>
+    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg">Login</a>
+    {% endif %}
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card feature-card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title">Book Appointments</h5>
+                <p class="card-text">Choose from our doctors and book your preferred time slot instantly.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card feature-card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title">Manage Appointments</h5>
+                <p class="card-text">View upcoming appointments or cancel if needed.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card feature-card h-100 shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title">Leave Feedback</h5>
+                <p class="card-text">Rate your experience and help us improve our service.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

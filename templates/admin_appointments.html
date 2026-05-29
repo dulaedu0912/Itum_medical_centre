@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}All Appointments - ITUM Medical Centre{% endblock %}
+{% block content %}
+<h3 class="mb-4">All Appointments</h3>
+
+<!-- Status Filter -->
+<div class="btn-group mb-4" role="group">
+    <a href="{{ url_for('admin.manage_appointments', status='all') }}"
+       class="btn {{ 'btn-primary' if status_filter == 'all' else 'btn-outline-primary' }}">
+        All
+    </a>
+    <a href="{{ url_for('admin.manage_appointments', status='pending') }}"
+       class="btn {{ 'btn-primary' if status_filter == 'pending' else 'btn-outline-primary' }}">
+        Pending
+    </a>
+    <a href="{{ url_for('admin.manage_appointments', status='completed') }}"
+       class="btn {{ 'btn-primary' if status_filter == 'completed' else 'btn-outline-primary' }}">
+        Completed
+    </a>
+    <a href="{{ url_for('admin.manage_appointments', status='cancelled') }}"
+       class="btn {{ 'btn-primary' if status_filter == 'cancelled' else 'btn-outline-primary' }}">
+        Cancelled
+    </a>
+</div>
+
+{% if appointments %}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+            <tr>
+                <td>{{ appt['id'] }}</td>
+                <td>{{ appt['student_name'] }}</td>
+                <td>{{ appt['doctor_name'] }}</td>
+                <td>{{ appt['appointment_date'] }}</td>
+                <td>{{ appt['appointment_time'] }}</td>
+                <td>{{ appt['reason'] or '-' }}</td>
+                <td>
+                    {% if appt['status'] == 'pending' %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif appt['status'] == 'completed' %}
+                    <span class="badge bg-success">Completed</span>
+                    {% elif appt['status'] == 'cancelled' %}
+                    <span class="badge bg-danger">Cancelled</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    {% if status_filter == 'all' %}
+    No appointments have been made yet.
+    {% else %}
+    No appointments with status "{{ status_filter }}".
+    {% endif %}
+</div>
+{% endif %}
+
+<a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+{% endblock %}

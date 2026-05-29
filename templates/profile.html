@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}My Profile - ITUM Medical Centre{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="mb-4">My Profile</h3>
+
+                <table class="table">
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ user['full_name'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ user['email'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone:</th>
+                        <td>{{ user['phone'] or 'Not provided' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Role:</th>
+                        <td><span class="badge bg-info">{{ user['role'] }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Member since:</th>
+                        <td>{{ user['created_at'] }}</td>
+                    </tr>
+                </table>
+
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('profile.edit_profile') }}" class="btn btn-primary">
+                        Edit Profile
+                    </a>
+                    <a href="{{ url_for('profile.change_password') }}" class="btn btn-outline-secondary">
+                        Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
